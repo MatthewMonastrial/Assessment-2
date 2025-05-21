@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    .bg {
+        width: 500px;
+        height: 500px;
+        border: 1px solid black;
+        margin: auto;
+        background-color: black;
+    }
+    #pink {
+        position: relative;
+        width: 20px;
+        height: 50px;
+        background-color: hotpink;
+        top: 150px;
+    }
+    #blue {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        background-color: aqua;
+        top: 130px;
+        left: 500px;
+        animation: blue 2s infinite linear;
+    }
+
+    @keyframes blue {
+        0% {left: 500px;}
+        100% {left: -20px;}
+    }
+
+    @keyframes jump{
+        0% {top: 150px;}
+        50% {top: 100px;}
+        100% {top: 150px;}
+    }
+    .animate {
+        animation: jump 0.5s linear;
+    }
+</style>
+<body onclick="jump()">
+    <div class="bg">
+        <div id = "pink"></div>
+        <div id = "blue"></div>
+    </div>
+    <p style="color: mediumpurple;">Score: <span id ="scoreSpan"></span></p>
+
+<script>
+    var pink = document.getElementById("pink");
+    var blue = document.getElementById("blue");
+    var counter = 0;
+
+    function jump() {
+        pink.classList.add("animate");
+        setTimeout(function() {
+            pink.classList.remove("animate");
+        }, 300);
+        }
+
+        document.addEventListener("keydown", function(event) {
+        if (event.code === "Space") {
+            jump();
+        }
+        });
+
+    var checkCollision = setInterval(function() {
+        var pinkTop = parseInt(window.getComputedStyle(pink).getPropertyValue("top"));
+        var blueLeft = parseInt(window.getComputedStyle(blue).getPropertyValue("left"));
+
+        if (blueLeft > 0 && blueLeft < 30 && pinkTop >= 140) {
+            alert("Game Over! Your score: " + counter);
+            counter = 0;
+        } else if (blueLeft < 0) {
+            counter++;
+            document.getElementById("scoreSpan").innerHTML = counter;
+        }
+    }, 10);
+</script>
+</body>
+</html>
